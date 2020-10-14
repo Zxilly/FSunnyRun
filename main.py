@@ -37,6 +37,7 @@ def Run(IMEI,sckey):
 
     if not TokenJson['Success']:
         requests.get(f"https://sc.ftqq.com/{sckey}.send?text=IMEI过期")
+        exit(0)
 
     print(TokenJson)
 
@@ -72,14 +73,14 @@ def Run(IMEI,sckey):
     SRSres = requests.get(SRSurl, headers=header, data={})
     SRSjson = json.loads(SRSres.content.decode('utf8', 'ignore'))
 
-    print(SRSjson)
+    # print(SRSjson)
 
     # Generate Runnig Data Randomly
     RunTime = str(random.randint(420, 480))  # seconds
     RunDist = str(Lengths + random.randint(0, 3))  # meters
     RunStep = str(random.randint(1300, 1600))  # steps
 
-    print(RunTime,RunStep,RunDist)
+    # print(RunTime,RunStep,RunDist)
 
     # Running Sleep
     # StartT = time.time()
