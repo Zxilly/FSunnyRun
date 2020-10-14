@@ -3,12 +3,13 @@ import json
 import time
 import hashlib
 import random
-import sys
+from sec import *
 
 # Generate table Randomly
 alphabet = list('abcdefghijklmnopqrstuvwxyz')
 random.shuffle(alphabet)
 table = ''.join(alphabet)[:10]
+
 
 
 def MD5(s):
@@ -23,25 +24,8 @@ def encrypt(s):
     return result
 
 
-def Run(IMEI=None):
-    if IMEI is None:
-        # Input to IMEI
-        if len(sys.argv) > 1:
-            IMEI = sys.argv[1]
-        else:
-            IMEI = str(input("Please Input Your IMEI Arg:"))
-        if len(IMEI) != 32:
-            exit("IMEI Format Error!")
+def Run(IMEI,sckey):
 
-        if len(sys.argv) > 2 and sys.argv[2].upper() == 'Y':
-            pass
-        else:
-            print("Your IMEI Code:", IMEI)
-            Sure = str(input("Sure?(Y/N)"))
-            if (Sure == 'Y' or Sure == 'y'):
-                pass
-            else:
-                exit("User Aborted.")
 
     API_ROOT = 'http://client3.aipao.me/api'  # client3 for Android
     Version = '2.14'
@@ -50,6 +34,11 @@ def Run(IMEI=None):
     TokenRes = requests.get(
         API_ROOT + '/%7Btoken%7D/QM_Users/Login_AndroidSchool?IMEICode=' + IMEI)
     TokenJson = json.loads(TokenRes.content.decode('utf8', 'ignore'))
+
+    if not TokenJson['Success']:
+        requests.get(f"https://sc.ftqq.com/{sckey}.send?text=IMEI过期")
+
+    print(TokenJson)
 
     # headers
     token = TokenJson['Data']['Token']
@@ -128,9 +117,8 @@ def Run(IMEI=None):
         print("[!]Fail:", EndJson['Data'])
 
 
-def main():
-    Run()
+
 
 
 if __name__ == '__main__':
-    main()
+    Run(IMEI,sckey)
