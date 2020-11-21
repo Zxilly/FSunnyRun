@@ -28,12 +28,13 @@ def Run(IMEI,sckey):
 
 
     API_ROOT = 'http://client3.aipao.me/api'  # client3 for Android
-    Version = '2.14'
+    Version = '2.40'
 
     # Login
     TokenRes = requests.get(
-        API_ROOT + '/%7Btoken%7D/QM_Users/Login_AndroidSchool?IMEICode=' + IMEI)
+        API_ROOT + '/%7Btoken%7D/QM_Users/Login_AndroidSchool?IMEICode=' + IMEI,headers={"version":"2.40"})
     TokenJson = json.loads(TokenRes.content.decode('utf8', 'ignore'))
+    print(TokenJson)
 
     if not TokenJson['Success']:
         requests.get(f"https://sc.ftqq.com/{sckey}.send?text=IMEI过期")
@@ -76,7 +77,7 @@ def Run(IMEI,sckey):
     # print(SRSjson)
 
     # Generate Runnig Data Randomly
-    RunTime = str(random.randint(420, 480))  # seconds
+    RunTime = str(random.randint(700, 800))  # seconds
     RunDist = str(Lengths + random.randint(0, 3))  # meters
     RunStep = str(random.randint(1300, 1600))  # steps
 
